@@ -1,0 +1,254 @@
+/* --- General --- */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #1e293b;
+  color: #fff;
+}
+
+.subscriptions {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- Header & Tabs --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tabs button {
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  background: #334155;
+  color: #cbd5e1;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s;
+}
+
+.tabs button:hover {
+  background: #475569;
+}
+
+.tabs button.active {
+  background: #16a34a;
+  color: #fff;
+}
+
+/* --- KPI Cards --- */
+.overview .kpis {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.kpis > * {
+  flex: 1 1 220px;
+}
+
+/* --- Charts --- */
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.charts .chart {
+  background: #334155;
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1 1 300px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.chart-container {
+  flex: 1;
+}
+
+.legend {
+  display: flex;
+  gap: 15px;
+  font-size: 13px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.legend span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.legend .monthly { background: #3b82f6; }
+.legend .yearly { background: #8b5cf6; }
+
+/* --- Pricing --- */
+.pricing {
+  margin-top: 30px;
+  background: #334155;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.pricing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.pricing-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.pricing-header button {
+  background: none;
+  border: 1px solid #16a34a;
+  color: #16a34a;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.pricing-header button:hover {
+  background: #16a34a;
+  color: #fff;
+}
+
+.lock-view {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  gap: 5px;
+  color: #94a3b8;
+}
+
+/* --- Pricing Cards --- */
+.pricing-cards {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.pricing .card {
+  flex: 1 1 200px;
+  background: #1f2937;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #475569;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: border 0.3s, background 0.3s;
+}
+
+.pricing .card.editing {
+  border-color: #3b82f6;
+  background: #1e293b;
+}
+
+.pricing .card div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pricing .card input {
+  width: 70px;
+  padding: 4px 6px;
+  text-align: right;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  color: #16a34a;
+  font-weight: 600;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.pricing .card input:focus {
+  border-color: #3b82f6;
+}
+
+.save-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #16a34a;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  border-bottom-left-radius: 6px;
+}
+
+.pricing-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #78350f;
+  border: 1px solid #fcd34d;
+  padding: 8px;
+  border-radius: 6px;
+  background: #fef3c7;
+}
+
+/* --- Subscribers List --- */
+.subscribers-list {
+  margin-top: 25px;
+  overflow-x: auto;
+}
+
+.subscribers-list table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.subscribers-list th, 
+.subscribers-list td {
+  padding: 10px;
+  border: 1px solid #475569;
+  text-align: left;
+  font-size: 14px;
+}
+
+.subscribers-list th {
+  background: #1f2937;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.subscribers-list tr:hover {
+  background: #475569;
+  transition: background 0.3s;
+}

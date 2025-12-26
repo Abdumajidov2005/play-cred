@@ -1,0 +1,76 @@
+.stat-card {
+  position: relative;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 20px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.stat-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  opacity: 0.1;
+  font-size: 48px;
+  pointer-events: none;
+}
+
+.stat-header h3 {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 8px 0;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stat-trend {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.trend-text {
+  display: flex;
+  align-items: center;
+}
+
+.trend-icon {
+  margin-right: 4px;
+}
+
+.trend-text.positive {
+  color: #34d399;
+}
+
+.trend-text.negative {
+  color: #f87171;
+}
+
+.trend-text.neutral {
+  color: #94a3b8;
+}
+
+.trend-label {
+  margin-left: 8px;
+  color: #64748b;
+  font-size: 11px;
+}

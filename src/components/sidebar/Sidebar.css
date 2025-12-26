@@ -1,0 +1,243 @@
+.sidebar-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #0f172a;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+  width: 280px; /* ochiq holatda */
+  transition: all 0.3s ease-in-out;
+  border-right: 1px solid #1e293b;
+  z-index: 99;
+}
+
+.sidebar-container.collapsed {
+  width: 80px;
+}
+
+/* Header */
+.sidebar-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid #1e293b;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo-full,
+.logo-collapsed {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 28px;
+  height: 28px;
+  color: #34d399;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.logo-play {
+  color: white;
+}
+
+.logo-cred {
+  color: #34d399;
+}
+
+.toggle-button {
+  position: absolute;
+  right: -15px;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 6px;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+  color: white;
+  transform: translateY(-4px);
+  background-color: #1e293b;
+}
+
+.toggle-button:active {
+  transform: translateY(0px);
+}
+
+.toggle_bars {
+  display: none;
+}
+
+.toggle-button.active .toggle_bars {
+  display: block;
+}
+
+.toggle-button.active .toggle_left {
+  display: none;
+}
+
+/* Navigation */
+.sidebar-nav {
+  /* height: 100vh; */
+  flex: 1;
+  padding: 24px 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background-color: rgba(51, 65, 85, 0.5);
+  color: #e2e8f0;
+}
+
+.nav-item.active {
+  background-color: #1e293b;
+  color: #34d399;
+  border-right: 3px solid #34d399;
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.nav-icon.centered {
+  margin: 0 auto;
+}
+
+.nav-icon.active-icon {
+  color: #34d399;
+}
+
+.nav-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 12px;
+}
+
+.nav-tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  padding: 6px 10px;
+  background-color: #1e293b;
+  color: white;
+  font-size: 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 50;
+}
+
+.nav-item:hover .nav-tooltip {
+  opacity: 1;
+}
+
+/* Footer */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid #1e293b;
+}
+
+.user-info-full,
+.user-info-collapsed {
+  display: flex;
+  align-items: center;
+}
+
+.user-info-collapsed {
+  justify-content: center;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, #10b981, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  /* flex-shrink: 0; */
+}
+
+.user-details {
+  margin-left: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  color: #34d399;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Scrollbar */
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}

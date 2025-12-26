@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  scroll-behavior: smooth;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: #0f172a;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #0f172a; /* ixtiyoriy */
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Scroll fon qismi */
+::-webkit-scrollbar-track {
+  background: #475569;
+}
+
+/* Scroll harakatlanadigan qismi */
+::-webkit-scrollbar-thumb {
+  background: #0f172a;
+  border-radius: 8px;
+}
+
+/* Hover holati */
+::-webkit-scrollbar-thumb:hover {
+  background: #0f172a;
+}
