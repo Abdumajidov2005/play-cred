@@ -129,20 +129,22 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="charts-grid">
+      <div className="dashboard_charts-grid">
         {/* User Growth Chart */}
-        <div className="chart-card">
-          <h3>User Growth & Activity</h3>
-          <div className="legend">
-            <span className="active">
-              <div></div>Active Users
-            </span>
-            <span className="new">
-              <div></div>New Users
-            </span>
+        <div className="dashboard_chart-card">
+          <div className="dash_title">
+            <h3>User Growth & Activity</h3>
+            <div className="dashboard_legend">
+              <span className="dashboard_active">
+                <div></div>Active Users
+              </span>
+              <span className="dashboard_new">
+                <div></div>New Users
+              </span>
+            </div>
           </div>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="dashboard_chart-container">
+            <ResponsiveContainer width="100%" height={320}>
               <AreaChart
                 data={dataUserGrowth}
                 margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
@@ -204,9 +206,9 @@ const Dashboard = () => {
         </div>
 
         {/* Revenue Breakdown */}
-        <div className="chart-card">
+        <div className="dashboard_chart-card">
           <h3>Revenue Breakdown</h3>
-          <div className="chart-container pie">
+          <div className="dashboard_chart-container pie">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -236,16 +238,18 @@ const Dashboard = () => {
                 />
               </PieChart>
             </ResponsiveContainer>
-            <div className="pie-center">
+            <div className="dashboard_pie-center">
               <span>AED {(totalRevenue / 1000).toFixed(1)}k</span>
               <small>Total</small>
             </div>
           </div>
-          <div className="pie-legend">
+          <div className="dashboard_pie-legend">
             {revenueData.map((item, index) => (
               <div key={item.name}>
-                <span style={{ backgroundColor: COLORS[index] }}></span>
-                <span>{item.name}</span>
+                <div className="dashboard_pie-legend_titile">
+                  <span style={{ backgroundColor: COLORS[index] }}></span>
+                  <span>{item.name}</span>
+                </div>
                 <strong>AED {(item.value / 1000).toFixed(1)}k</strong>
               </div>
             ))}

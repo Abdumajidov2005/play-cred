@@ -39,6 +39,11 @@ export const navItems = [
     label: "Bookings & Sessions",
     icon: Calendar,
   },
+   {
+    path: "/revenue",
+    label: "Ads & Revenue",
+    icon: Calendar,
+  },
   {
     path: "/ad-limits",
     label: "Ad Limits",

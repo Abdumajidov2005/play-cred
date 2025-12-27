@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Users from "../pages/users/Users";
 import Subscriptions from "../pages/subscriptions/Subscriptions";
 import Bookings from "../pages/bookings/Bookings";
+import AdsRevenue from "../pages/adventures/AdsRevenue";
 
 function RouterDom() {
   const [isOpen, setIsOpen] = useState(true);
@@ -25,6 +26,7 @@ function RouterDom() {
                 <Route path="/users" element={<Users />} />
                 <Route path="/subscriptions" element={<Subscriptions />} />
                 <Route path="/bookings" element={<Bookings />} />
+                <Route path="/revenue" element={<AdsRevenue />} />
                 <Route path="/ad-limits" element={<AdLimitAnalytics />} />
               </Routes>
             </main>

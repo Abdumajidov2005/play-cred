@@ -1,0 +1,156 @@
+.ads-dashboard {
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  color: #e2e8f0;
+  background-color: #0f172a;
+  min-height: 100vh;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.stat-title {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.green {
+  color: #10b981;
+}
+
+.stat-trend {
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.up {
+  color: #10b981;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chart-card {
+  background: #0f172a;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.chart-subtitle {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.chart-container {
+  height: 300px;
+}
+
+.campaigns-card {
+  background: #0f172a;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.campaigns-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.no-campaigns {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
+
+.campaign-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #1e293b;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.campaign-item:hover {
+  border-color: #475569;
+}
+
+.campaign-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.campaign-thumbnail {
+  width: 40px;
+  height: 40px;
+  background: #0f172a;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  flex-shrink: 0;
+}
+
+.campaign-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.campaign-details {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.campaign-stats {
+  text-align: right;
+}
+
+.campaign-revenue {
+  font-size: 14px;
+  font-weight: bold;
+  color: #10b981;
+}
+
+.campaign-views {
+  font-size: 12px;
+  color: #64748b;
+}
