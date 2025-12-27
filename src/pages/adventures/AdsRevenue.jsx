@@ -110,33 +110,33 @@ const AdsRevenue = () => {
 
   return (
     <div className="ads-dashboard">
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-title">Total Impressions</div>
-          <div className="stat-value">
+      <div className="ads_stats-grid">
+        <div className="ads_stat-card">
+          <div className="ads_stat-title">Total Impressions</div>
+          <div className="ads_stat-value">
             {(totalImpressions / 1000).toFixed(1)}k
           </div>
-          <div className="stat-trend up">↑ 5.4% from last period</div>
+          <div className="ads_stat-trend up">↑ 5.4% from last period</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-title">Avg eCPM</div>
-          <div className="stat-value">AED {avgCPM.toFixed(2)}</div>
-          <div className="stat-trend up">↑ 1.2% from last period</div>
+        <div className="ads_stat-card">
+          <div className="ads_stat-title">Avg eCPM</div>
+          <div className="ads_stat-value">AED {avgCPM.toFixed(2)}</div>
+          <div className="ads_stat-trend up">↑ 1.2% from last period</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-title">Total Revenue</div>
-          <div className="stat-value green">
+        <div className="ads_stat-card">
+          <div className="ads_stat-title">Total Revenue</div>
+          <div className="ads_stat-value green">
             AED {totalRevenue.toLocaleString()}
           </div>
-          <div className="stat-trend up">↑ 8.4% from last period</div>
+          <div className="ads_stat-trend up">↑ 8.4% from last period</div>
         </div>
       </div>
 
-      <div className="charts-grid">
-        <div className="chart-card">
-          <h3 className="chart-title">Revenue Breakdown</h3>
-          <p className="chart-subtitle">Distribution by Ad Format</p>
-          <div className="chart-container">
+      <div className="ads_charts-grid">
+        <div className="ads_chart-card">
+          <h3 className="ads_chart-title">Revenue Breakdown</h3>
+          <p className="ads_chart-subtitle">Distribution by Ad Format</p>
+          <div className="ads_chart-container">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -167,9 +167,9 @@ const AdsRevenue = () => {
           </div>
         </div>
 
-        <div className="chart-card">
-          <h3 className="chart-title">Top Campaigns by Revenue</h3>
-          <div className="chart-container">
+        <div className="ads_chart-card">
+          <h3 className="ads_chart-title">Top Campaigns by Revenue</h3>
+          <div className="ads_chart-container">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} layout="vertical">
                 <CartesianGrid
@@ -205,7 +205,7 @@ const AdsRevenue = () => {
       </div>
 
       <div className="campaigns-card">
-        <h3 className="chart-title">Active Campaigns List</h3>
+        <h3 className="ads_chart-title">Active Campaigns List</h3>
         <div className="campaigns-list">
           {campaigns.filter((c) => c.status === "Active").length === 0 ? (
             <div className="no-campaigns">No active campaigns.</div>

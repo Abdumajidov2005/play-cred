@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
-import "./Users.css";
+import React, { useState, useMemo } from "react";
 import {
   Search,
   Mail,
@@ -9,8 +8,9 @@ import {
   PlusCircle,
   MinusCircle,
 } from "lucide-react";
+import "./Users.css";
 
-/* ================= MOCK DATA ================= */
+/* ================= MOCK USERS ================= */
 
 const mockUsers = [
   {
@@ -37,52 +37,22 @@ const mockUsers = [
 
 export default function Users() {
   const [users, setUsers] = useState(mockUsers);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [creditAmount, setCreditAmount] = useState("");
-  const [searchUser, setSearchUser] = useState(false);
-  const [showDateFilter, setShowDateFilter] = useState(false);
-
-  const userRefs = useRef(null);
-  const dateRef = useRef(null);
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (userRefs.current && !userRefs.current.contains(e.target))
-        setSearchUser(false);
-
-      if (dateRef.current && !dateRef.current.contains(e.target))
-        setShowDateFilter(false);
-    };
-
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
 
   /* ================= FILTER ================= */
 
   const filteredUsers = useMemo(() => {
     return users.filter(
       (u) =>
-        u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        u.id.includes(searchQuery)
+        u.name.toLowerCase().includes(search.toLowerCase()) ||
+        u.email.toLowerCase().includes(search.toLowerCase()) ||
+        u.id.includes(search)
     );
-  }, [users, searchQuery]);
+  }, [users, search]);
 
   /* ================= ACTIONS ================= */
-
-  const verifyEmail = (id) => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, emailVerified: true } : u))
-    );
-  };
-
-  const verifyPhone = (id) => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, phoneVerified: true } : u))
-    );
-  };
 
   const addCredits = () => {
     if (!creditAmount || !selectedUser) return;
@@ -116,87 +86,104 @@ export default function Users() {
     setCreditAmount("");
   };
 
+  const verifyEmail = (id) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === id ? { ...u, emailVerified: true } : u
+      )
+    );
+  };
+
+  const verifyPhone = (id) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === id ? { ...u, phoneVerified: true } : u
+      )
+    );
+  };
+
   /* ================= UI ================= */
 
   return (
     <div className="users-page">
-      <div className="users-page_navs">
-        <div
-          ref={userRefs}
-          onClick={() => {
-            setSearchUser(true);
-          }}
-          className={`search-box ${searchUser ? "active" : ""}`}
-        >
+      {/* SEARCH */}
+      <div className="users-header">
+        <div className="search-box">
           <Search size={18} />
           <input
-            placeholder="Search users by name, email or ID..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name, email or ID"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-        </div>
-        <div className="users-page_selects">
-           <button>
-               user
-           </button>
         </div>
       </div>
 
       {/* TABLE */}
-      <div className="users-table-wrapper">
-        <table className="users-table">
-          <thead>
+      <table className="users-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Contact</th>
+            <th>Verified</th>
+            <th>Ads</th>
+            <th>Bookings</th>
+            <th>Credits</th>
+            <th>Sub</th>
+            <th>Last Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredUsers.length === 0 && (
             <tr>
-              <th>User</th>
-              <th>Contact</th>
-              <th>Verified</th>
-              <th>Credits</th>
-              <th>Last Active</th>
+              <td colSpan="8" className="empty">
+                No users found
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.length === 0 && (
-              <tr>
-                <td colSpan="5" className="empty">
-                  No users found matching filters.
-                </td>
-              </tr>
-            )}
+          )}
 
-            {filteredUsers.map((user) => (
-              <tr key={user.id} onClick={() => setSelectedUser(user)}>
-                <td>
-                  <strong>{user.name}</strong>
-                  <div className="sub">ID: {user.id}</div>
-                </td>
-                <td>
-                  <div>{user.email}</div>
-                  <div className="sub">{user.phone}</div>
-                </td>
-                <td className="center">
-                  {user.emailVerified ? (
-                    <CheckCircle className="ok" size={16} />
-                  ) : (
-                    <XCircle className="bad" size={16} />
-                  )}
-                  {user.phoneVerified ? (
-                    <Smartphone className="ok" size={16} />
-                  ) : (
-                    <Smartphone className="bad" size={16} />
-                  )}
-                </td>
-                <td className="center">{user.credits} CR</td>
-                <td>{user.lastActive}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          {filteredUsers.map((user) => (
+            <tr key={user.id} onClick={() => setSelectedUser(user)}>
+              <td>
+                <strong>{user.name}</strong>
+                <div className="sub">{user.segment}</div>
+              </td>
+              <td>
+                <div>{user.email}</div>
+                <div className="sub">{user.phone}</div>
+              </td>
+              <td className="center">
+                {user.emailVerified ? (
+                  <CheckCircle className="ok" size={16} />
+                ) : (
+                  <XCircle className="bad" size={16} />
+                )}
+                {user.phoneVerified ? (
+                  <Smartphone className="ok" size={16} />
+                ) : (
+                  <Smartphone className="bad" size={16} />
+                )}
+              </td>
+              <td className="center">{user.adsWatched}</td>
+              <td className="center">{user.totalBookings}</td>
+              <td className="center">
+                <strong>{user.credits} CR</strong>
+                <div className="green">+{user.creditsEarned}</div>
+                <div className="red">-{user.creditsSpent}</div>
+              </td>
+              <td>{user.subscriptionStatus}</td>
+              <td>{user.lastActive}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* DRAWER */}
       {selectedUser && (
         <div className="drawer" onClick={() => setSelectedUser(null)}>
-          <div className="drawer-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="drawer-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button className="close" onClick={() => setSelectedUser(null)}>
               ✕
             </button>

@@ -1,0 +1,340 @@
+/* Referrals.css - Premium Dark UI with Rich Effects */
+
+.referrals-container {
+  padding: 32px;
+  background: linear-gradient(to bottom, #0a0e17, #0f172a);
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #e2e8f0;
+}
+
+/* Status Banner */
+.status-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.2),
+    rgba(30, 41, 59, 0.6)
+  );
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 24px;
+  padding: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(16, 185, 129, 0.1);
+  backdrop-filter: blur(12px);
+  transition: all 0.4s ease;
+}
+.banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .banner-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.banner-text h2 {
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 12px 0;
+  background: linear-gradient(90deg, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.banner-text p {
+  font-size: 14px;
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.banner-stats {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .banner-stats {
+    justify-content: flex-end;
+  }
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 25px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.stat-item.highlight .stat-value {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+/* Main Grid */
+.referals_main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .referals_main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Top Referrers Card */
+.top-referrers-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 24px;
+  padding: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card-header .icon {
+  font-size: 32px;
+}
+
+.card-header h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+}
+
+.referrers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.referrer-item {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 12px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.referrer-item:hover {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(16, 185, 129, 0.4);
+  transform: translateX(8px);
+}
+
+.rank-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rank-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+.rank-1 {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+}
+.rank-2 {
+  background: #cbd5e1;
+}
+.rank-3 {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+}
+.rank-4,
+.rank-5 {
+  background: #475569;
+  color: white;
+}
+
+.user-name {
+  font-weight: 600;
+  color: white;
+  font-size: 16px;
+}
+
+.referral-stats {
+  text-align: right;
+}
+
+.invites {
+  font-size: 14px;
+  font-weight: 800;
+  color: #34d399;
+  letter-spacing: 1px;
+}
+
+.credits {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Invite Channels Card */
+.channels-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 24px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+}
+
+.channels-card .icon.large {
+  font-size: 64px;
+  margin-bottom: 24px;
+  opacity: 0.7;
+}
+
+.channels-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.channels-card p {
+  font-size: 15px;
+  color: #94a3b8;
+  max-width: 320px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.channels-list {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.channel-item span:first-child {
+  color: #cbd5e1;
+  font-weight: 500;
+  min-width: 100px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 12px;
+  background: rgba(51, 68, 92, 0.6);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 0 20px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.8s ease;
+  box-shadow: 0 0 15px currentColor;
+}
+
+.progress-fill.whatsapp {
+  background: linear-gradient(90deg, #25d366, #128c7e);
+}
+
+.progress-fill.instagram {
+  background: linear-gradient(90deg, #e4405f, #c13584);
+}
+
+.progress-fill.direct {
+  background: linear-gradient(90deg, #60a5fa, #3b82f6);
+}
+
+.percentage {
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  min-width: 50px;
+  text-align: right;
+}
+
+/* Animations */
+.referrer-item,
+.channel-item {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.referrer-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.referrer-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.referrer-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.referrer-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.referrer-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

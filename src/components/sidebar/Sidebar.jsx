@@ -47,7 +47,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {navItems?.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
-           console.log(location.pathname)
            
           return (
             <NavLink

@@ -102,7 +102,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       {/* KPI Grid */}
-      <div className="kpi-grid">
+      <div className="dashboard_kpi-grid">
         <StatCard
           title="Total Users"
           value={totalUsers}
@@ -258,15 +258,15 @@ const Dashboard = () => {
       </div>
 
       {/* Stats Row 2 */}
-      <div className="kpi-grid">
-        <div className="stat-card">
+      <div className="dashboard_kpi-grid">
+        <div className="dashboard_stat-card">
           <div>
             <small>Credits Issued</small>
             <h2>{mockUsers.reduce((a, u) => a + u.creditsEarned, 0)}</h2>
           </div>
           <DollarSign className="icon" />
         </div>
-        <div className="stat-card">
+        <div className="dashboard_stat-card">
           <div>
             <small>Field Occupancy</small>
             <h2>

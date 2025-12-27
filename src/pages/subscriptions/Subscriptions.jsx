@@ -3,9 +3,6 @@ import {
   Users,
   Activity,
   DollarSign,
-  Edit2,
-  Save,
-  X,
   Lock,
 } from "lucide-react";
 import {
@@ -24,7 +21,7 @@ import "./Subscriptions.css";
 import StatCard from "../../components/stateCard/StatCard";
 
 const Subscriptions = () => {
-  // Mock Data (backend bo'lmasa)
+  // Mock Data
   const subscriptions = [
     {
       id: 1,
@@ -55,8 +52,13 @@ const Subscriptions = () => {
     },
   ];
 
-  const subscriptionPricing = { monthly: 100, yearly: 1000 };
-  const currentAdmin = { role: "Super Admin" }; // Example
+  const currentAdmin = { role: "Super Admin" }; // Misol
+
+  // Narxlarni state bilan boshqarish (eng muhim tuzatish)
+  const [subscriptionPricing, setSubscriptionPricing] = useState({
+    monthly: 100,
+    yearly: 1000,
+  });
 
   const [activeTab, setActiveTab] = useState("OVERVIEW");
   const [isEditingPricing, setIsEditingPricing] = useState(false);
@@ -66,17 +68,21 @@ const Subscriptions = () => {
     currentAdmin.role
   );
 
+  // Hisob-kitoblar
   const activeMonthly = subscriptions.filter(
     (s) => s.status === "Active" && s.plan === "Monthly"
   ).length;
+
   const activeYearly = subscriptions.filter(
     (s) => s.status === "Active" && s.plan === "Yearly"
   ).length;
+
   const totalRevenue = subscriptions.reduce((acc, s) => acc + s.totalPaid, 0);
 
   const mrr =
     activeMonthly * subscriptionPricing.monthly +
     (activeYearly * subscriptionPricing.yearly) / 12;
+
   const arr = mrr * 12;
 
   const planDistData = [
@@ -84,14 +90,20 @@ const Subscriptions = () => {
     { name: "Yearly", value: activeYearly, color: "#8b5cf6" },
   ];
 
+  // Pricing edit funksiyalari
   const handleSavePricing = () => {
-    Object.assign(subscriptionPricing, tempPricing);
+    setSubscriptionPricing({ ...tempPricing });
     setIsEditingPricing(false);
   };
 
   const handleCancelPricingEdit = () => {
     setTempPricing({ ...subscriptionPricing });
     setIsEditingPricing(false);
+  };
+
+  const startEditing = () => {
+    setTempPricing({ ...subscriptionPricing });
+    setIsEditingPricing(true);
   };
 
   const renderOverview = () => (
@@ -123,10 +135,10 @@ const Subscriptions = () => {
         />
       </div>
 
-      <div className="charts">
-        <div className="chart revenue">
+      <div className="subscriptions_charts">
+        <div className="subscriptions_chart revenue">
           <h3>Revenue Growth (ARR)</h3>
-          <div className="chart-container">
+          <div className="subscriptions_chart-container">
             <ResponsiveContainer width="100%" height={250}>
               <AreaChart
                 data={[
@@ -142,11 +154,7 @@ const Subscriptions = () => {
                     <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#475569"
-                  vertical={false}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="#475569" vertical={false} />
                 <XAxis dataKey="name" stroke="#94a3b8" />
                 <YAxis stroke="#94a3b8" />
                 <Area
@@ -155,15 +163,14 @@ const Subscriptions = () => {
                   stroke="#8b5cf6"
                   fill="url(#colorRev)"
                 />
-                {/* Tooltip olib tashlandi */}
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="chart plan-dist">
+        <div className="subscriptions_chart plan-dist">
           <h3>Plan Distribution</h3>
-          <div className="chart-container">
+          <div className="subscriptions_chart-container">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -183,43 +190,48 @@ const Subscriptions = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="legend">
+          <div className="subscriptions_legend">
             <span className="monthly"></span> Monthly
             <span className="yearly"></span> Yearly
           </div>
         </div>
       </div>
 
-      <div className="pricing">
-        <div className="pricing-header">
+      <div className="subscriptions_pricing">
+        <div className="subscriptions_pricing-header">
           <h3>Current Pricing</h3>
           {canManagePricing ? (
             isEditingPricing ? (
-              <div>
-                <button onClick={handleSavePricing}>Save</button>
-                <button onClick={handleCancelPricingEdit}>Cancel</button>
+              <div className="subscriptions_pricing-buttons">
+                <button onClick={handleSavePricing} className="subscriptions_save-btn">
+                  Save
+                </button>
+                <button onClick={handleCancelPricingEdit} className="subscriptions_cancel-btn">
+                  Cancel
+                </button>
               </div>
             ) : (
-              <button onClick={() => setIsEditingPricing(true)}>
+              <button onClick={startEditing} className="subscriptions_edit-btn">
                 Edit Pricing
               </button>
             )
           ) : (
-            <div className="lock-view">
-              <Lock size={12} /> View Only
+            <div className="subscriptions_lock-view">
+              <Lock size={16} /> View Only
             </div>
           )}
         </div>
 
-        <div className="pricing-cards">
-          <div className={`card ${isEditingPricing ? "editing" : ""}`}>
-            <div>
+        <div className="subscriptions_pricing-cards">
+          <div className={`subscriptions_card ${isEditingPricing ? "editing" : ""}`}>
+            <div className="subscriptions_card-title">
               <div>Monthly Plan</div>
               <div>Billed every 30 days</div>
             </div>
             {isEditingPricing ? (
               <input
                 type="number"
+                min="0"
                 value={tempPricing.monthly}
                 onChange={(e) =>
                   setTempPricing({
@@ -229,25 +241,29 @@ const Subscriptions = () => {
                 }
               />
             ) : (
-              <div>{subscriptionPricing.monthly} AED</div>
+              <div className="subscriptions_price">{subscriptionPricing.monthly} AED</div>
             )}
           </div>
 
-          <div className={`card ${isEditingPricing ? "editing" : ""}`}>
+          <div className={`subscriptions_card ${isEditingPricing ? "editing" : ""}`}>
             {!isEditingPricing && (
-              <div className="save-tag">
-                SAVE{" "}
-                {subscriptionPricing.monthly * 12 - subscriptionPricing.yearly}{" "}
+              <div className="subscriptions_save-tag">
+                SAVE
+                {Math.max(
+                  0,
+                  subscriptionPricing.monthly * 12 - subscriptionPricing.yearly
+                )}{" "}
                 AED
               </div>
             )}
-            <div>
+            <div className="subscriptions_card-title">
               <div>Yearly Plan</div>
               <div>Billed every 365 days</div>
             </div>
             {isEditingPricing ? (
               <input
                 type="number"
+                min="0"
                 value={tempPricing.yearly}
                 onChange={(e) =>
                   setTempPricing({
@@ -257,14 +273,14 @@ const Subscriptions = () => {
                 }
               />
             ) : (
-              <div>{subscriptionPricing.yearly} AED</div>
+              <div className="subscriptions_price">{subscriptionPricing.yearly} AED</div>
             )}
           </div>
         </div>
 
         {isEditingPricing && (
-          <div className="pricing-note">
-            Note: Changing pricing affects future billing cycles.
+          <div className="subscriptions_pricing-note">
+            Note: Changing pricing affects future billing cycles only.
           </div>
         )}
       </div>
@@ -273,7 +289,7 @@ const Subscriptions = () => {
 
   return (
     <div className="subscriptions">
-      <div className="header">
+      <div className="subscriptions_header">
         <h2>Subscriptions</h2>
         <div className="tabs">
           <button
@@ -311,7 +327,7 @@ const Subscriptions = () => {
                 <tr key={sub.id}>
                   <td>{sub.userName}</td>
                   <td>{sub.plan}</td>
-                  <td>{sub.status}</td>
+                  <td className={sub.status.toLowerCase()}>{sub.status}</td>
                   <td>{sub.startDate}</td>
                   <td>{sub.nextRenewal}</td>
                   <td>{sub.totalPaid} AED</td>

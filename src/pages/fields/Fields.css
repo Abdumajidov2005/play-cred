@@ -1,0 +1,255 @@
+.fields-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+.fields_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.fields_header h2 {
+  color: #fff;
+  font-size: 24px;
+  margin: 0;
+}
+.fields_btn-add {
+  background: #10b981;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.fields_btn-add:hover {
+  background: #059669;
+}
+.fields_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+.fields_card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.fields_card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border-color: #475569;
+}
+.fields_card-img {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.fields_card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.fields_card:hover .fields_card-img img {
+  transform: scale(1.05);
+}
+.fields_status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.status-active {
+  background: #10b981;
+  color: white;
+}
+.status-maintenance {
+  background: #475569;
+  color: #cbd5e1;
+}
+.fields_card-body {
+  padding: 20px;
+  color: white;
+}
+.fields_card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.fields_actions {
+  display: flex;
+  gap: 8px;
+}
+.fields_btn-icon {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+.fields_btn-icon:hover {
+  background: #334155;
+  color: white;
+}
+.fields_btn-delete:hover {
+  color: #f87171;
+}
+.fields_location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 14px;
+  margin-bottom: 16px;
+  justify-content: space-between;
+}
+.fields_map-link {
+  font-size: 12px;
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.fields_stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.fields_stat-box {
+  background: rgba(15, 23, 42, 0.5);
+  padding: 12px;
+  border-radius: 8px;
+}
+.fields_stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.fields_stat-value {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+.fields_price-section {
+  padding-top: 16px;
+  border-top: 1px solid #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.fields_price-label {
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.fields_price-value {
+  color: #34d399;
+  font-weight: bold;
+  font-family: monospace;
+}
+.fields_modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.fields_modal {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 500px;
+  color: white;
+}
+.fields_modal h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+}
+.fields_form-group {
+  margin-bottom: 16px;
+}
+.fields_form-group label {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.fields_form-group input,
+.fields_form-group select {
+  width: 100%;
+  padding: 10px;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  color: white;
+}
+.fields_modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+}
+.fields_btn-cancel {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+.fields_btn-save {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fields_btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.fields_spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.fields_no-fields {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #94a3b8;
+  padding: 40px;
+}
