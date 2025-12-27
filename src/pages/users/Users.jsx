@@ -1,237 +1,484 @@
-import React, { useState, useMemo } from "react";
-import {
-  Search,
-  Mail,
-  CheckCircle,
-  XCircle,
-  Smartphone,
-  PlusCircle,
-  MinusCircle,
-} from "lucide-react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import "./Users.css";
+import { Search } from "lucide-react";
 
-/* ================= MOCK USERS ================= */
-
+// Namuna ma'lumotlar
 const mockUsers = [
   {
-    id: "U001",
-    name: "Ali Hassan",
-    email: "ali@mail.com",
+    id: "USR001",
+    name: "Ahmed Al-Mansoori",
+    email: "ahmed@example.com",
     phone: "+971501234567",
-    status: "Active",
+    joinDate: "2024-08-15",
+    lastActive: "2 hours ago",
     segment: "Frequent Booker",
-    adsWatched: 120,
-    totalBookings: 15,
-    credits: 340,
-    creditsEarned: 500,
-    creditsSpent: 160,
+    status: "Active",
     emailVerified: true,
     phoneVerified: false,
-    joinDate: "2024-01-12",
-    lastActive: "2 days ago",
-    subscriptionStatus: "Monthly",
+    adsWatched: 342,
+    totalBookings: 18,
+    credits: 1250,
+    creditsEarned: 2100,
+    creditsSpent: 850,
+    subscriptionStatus: "Premium",
+    rating: 4.8,
+    reviewStatus: "Excellent",
+    notes: "VIP customer, frequently books premium slots.",
+  },
+  {
+    id: "USR002",
+    name: "Sara Khalid",
+    email: "sara.k@example.com",
+    phone: "+971552345678",
+    joinDate: "2025-01-10",
+    lastActive: "1 day ago",
+    segment: "Ad Watcher",
+    status: "Active",
+    emailVerified: false,
+    phoneVerified: true,
+    adsWatched: 890,
+    totalBookings: 3,
+    credits: 450,
+    creditsEarned: 890,
+    creditsSpent: 440,
+    subscriptionStatus: "None",
+    rating: 4.2,
+    reviewStatus: "Good",
+    notes: "",
+  },
+  {
+    id: "USR003",
+    name: "Omar Hassan",
+    email: "omar.h@example.com",
+    phone: "+971501112233",
+    joinDate: "2024-11-20",
+    lastActive: "3 days ago",
+    segment: "Casual",
+    status: "Inactive",
+    emailVerified: true,
+    phoneVerified: true,
+    adsWatched: 120,
+    totalBookings: 5,
+    credits: 80,
+    creditsEarned: 150,
+    creditsSpent: 70,
+    subscriptionStatus: "None",
+    rating: 3.9,
+    reviewStatus: "Good",
+    notes: "Low activity recently.",
   },
 ];
 
-/* ================= COMPONENT ================= */
+const mockCreditBatches = [
+  {
+    id: "B001",
+    userId: "USR001",
+    source: "Referral Bonus",
+    originalAmount: 500,
+    remainingAmount: 300,
+    earnedDate: "2024-09-01",
+    expiryDate: "2025-03-31",
+    status: "Active",
+  },
+  {
+    id: "B002",
+    userId: "USR001",
+    source: "Ad Watching",
+    originalAmount: 800,
+    remainingAmount: 800,
+    earnedDate: "2025-01-15",
+    expiryDate: null,
+    status: "Active",
+  },
+  {
+    id: "B003",
+    userId: "USR001",
+    source: "Welcome Bonus",
+    originalAmount: 200,
+    remainingAmount: 150,
+    earnedDate: "2024-08-15",
+    expiryDate: "2025-01-05",
+    status: "Active",
+  },
+  {
+    id: "B004",
+    userId: "USR002",
+    source: "Ad Watching",
+    originalAmount: 600,
+    remainingAmount: 450,
+    earnedDate: "2025-01-20",
+    expiryDate: "2025-06-20",
+    status: "Active",
+  },
+];
 
-export default function Users() {
-  const [users, setUsers] = useState(mockUsers);
-  const [search, setSearch] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
+const currentAdmin = { role: "Founder & CEO" };
+
+const Users = () => {
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [segmentFilter, setSegmentFilter] = useState("All Segments");
+  const [statusFilter, setStatusFilter] = useState("All Statuses");
+  const [isEditing, setIsEditing] = useState(false);
   const [creditAmount, setCreditAmount] = useState("");
+  const [notificationStatus, setNotificationStatus] = useState("idle");
 
-  /* ================= FILTER ================= */
+  const [searchUserAdd, setSearchUserAdd] = useState(false);
+  const userRef = useRef();
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (userRef.current && !userRef.current.contains(e.target)) {
+        setSearchUserAdd(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const selectedUser = mockUsers.find((u) => u.id === selectedUserId);
+  const userBatches = mockCreditBatches.filter(
+    (b) => b.userId === selectedUserId
+  );
+
+  const canEditUsers = ["Founder & CEO", "Super Admin"].includes(
+    currentAdmin.role
+  );
+  const canManageCredits = [
+    "Founder & CEO",
+    "Super Admin",
+    "Operations Manager",
+  ].includes(currentAdmin.role);
 
   const filteredUsers = useMemo(() => {
-    return users.filter(
-      (u) =>
-        u.name.toLowerCase().includes(search.toLowerCase()) ||
-        u.email.toLowerCase().includes(search.toLowerCase()) ||
-        u.id.includes(search)
-    );
-  }, [users, search]);
+    return mockUsers.filter((user) => {
+      const matchesSearch =
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.id.includes(searchQuery);
+      const matchesSegment =
+        segmentFilter === "All Segments" || user.segment === segmentFilter;
+      const matchesStatus =
+        statusFilter === "All Statuses" || user.status === statusFilter;
+      return matchesSearch && matchesSegment && matchesStatus;
+    });
+  }, [searchQuery, segmentFilter, statusFilter]);
 
-  /* ================= ACTIONS ================= */
+  const activeCredits = userBatches
+    .filter((b) => b.status === "Active")
+    .reduce((sum, b) => sum + b.remainingAmount, 0);
+  const creditsExpiringIn7Days = userBatches
+    .filter((b) => {
+      if (!b.expiryDate || b.status !== "Active") return false;
+      const diffDays = Math.ceil(
+        (new Date(b.expiryDate).getTime() - Date.now()) / 86400000
+      );
+      return diffDays >= 0 && diffDays <= 7;
+    })
+    .reduce((sum, b) => sum + b.remainingAmount, 0);
 
-  const addCredits = () => {
-    if (!creditAmount || !selectedUser) return;
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === selectedUser.id
-          ? {
-              ...u,
-              credits: u.credits + Number(creditAmount),
-              creditsEarned: u.creditsEarned + Number(creditAmount),
-            }
-          : u
-      )
-    );
-    setCreditAmount("");
+  const handleEdit = () => {
+    if (selectedUser) {
+      setIsEditing(true);
+    }
   };
 
-  const deductCredits = () => {
-    if (!creditAmount || !selectedUser) return;
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === selectedUser.id
-          ? {
-              ...u,
-              credits: Math.max(0, u.credits - Number(creditAmount)),
-              creditsSpent: u.creditsSpent + Number(creditAmount),
-            }
-          : u
-      )
-    );
-    setCreditAmount("");
+  const handleSave = () => {
+    setIsEditing(false);
   };
 
-  const verifyEmail = (id) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === id ? { ...u, emailVerified: true } : u
-      )
-    );
+  const handleCancel = () => {
+    setIsEditing(false);
   };
 
-  const verifyPhone = (id) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === id ? { ...u, phoneVerified: true } : u
-      )
-    );
+  const handleSendNotification = () => {
+    setNotificationStatus("sending");
+    setTimeout(() => {
+      setNotificationStatus("sent");
+      setTimeout(() => setNotificationStatus("idle"), 3000);
+    }, 1500);
   };
-
-  /* ================= UI ================= */
 
   return (
     <div className="users-page">
-      {/* SEARCH */}
-      <div className="users-header">
-        <div className="search-box">
-          <Search size={18} />
+      {/* Filters */}
+      <div className="filters-container">
+        <div
+          ref={userRef}
+          onClick={() => {
+            setSearchUserAdd(true);
+          }}
+          className={`user_search-box ${searchUserAdd ? "active" : ""}`}
+        >
+          <Search size={22} />
           <input
-            placeholder="Search by name, email or ID"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            type="text"
+            placeholder="Search by name, email, or ID..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
+        </div>
+        <div className="filters">
+          <select
+            value={segmentFilter}
+            onChange={(e) => setSegmentFilter(e.target.value)}
+          >
+            <option>All Segments</option>
+            <option>Frequent Booker</option>
+            <option>High Spender</option>
+            <option>Heavy Player</option>
+            <option>Ad Watcher</option>
+            <option>New</option>
+            <option>Casual</option>
+            <option>Dormant</option>
+          </select>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option>All Statuses</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>Suspended</option>
+          </select>
         </div>
       </div>
 
-      {/* TABLE */}
-      <table className="users-table">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Contact</th>
-            <th>Verified</th>
-            <th>Ads</th>
-            <th>Bookings</th>
-            <th>Credits</th>
-            <th>Sub</th>
-            <th>Last Active</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.length === 0 && (
+      {/* Table */}
+      <div className="table-wrapper">
+        <table className="users-table">
+          <thead>
             <tr>
-              <td colSpan="8" className="empty">
-                No users found
-              </td>
+              <th>User</th>
+              <th>Contact</th>
+              <th>Verified</th>
+              <th>Ads</th>
+              <th>Bookings</th>
+              <th>Credits (+/-)</th>
+              <th>Sub</th>
+              <th>Last Active</th>
             </tr>
-          )}
+          </thead>
+          <tbody>
+            {filteredUsers.length === 0 ? (
+              <tr>
+                <td colSpan="8" className="no-results">
+                  No users found.
+                </td>
+              </tr>
+            ) : (
+              filteredUsers.map((user) => (
+                <tr key={user.id} onClick={() => setSelectedUserId(user.id)}>
+                  <td>
+                    <div className="user-cell">
+                      <div className="avatar">{user.name[0]}</div>
+                      <div>
+                        <div className="name">{user.name}</div>
+                        <div className="id-segment">
+                          #{user.id} • {user.segment}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="contact">
+                      <div>{user.email}</div>
+                      <div>{user.phone}</div>
+                    </div>
+                  </td>
+                  <td className="verified">
+                    <span
+                      className={
+                        user.emailVerified ? "verified-yes" : "verified-no"
+                      }
+                    >
+                      ●
+                    </span>
+                    <span
+                      className={
+                        user.phoneVerified ? "verified-yes" : "verified-no"
+                      }
+                    >
+                      ●
+                    </span>
+                  </td>
+                  <td>{user.adsWatched}</td>
+                  <td>{user.totalBookings}</td>
+                  <td className="credits">
+                    <div className="earned">+{user.creditsEarned}</div>
+                    <div className="spent">-{user.creditsSpent}</div>
+                  </td>
+                  <td>
+                    {user.subscriptionStatus !== "None" ? (
+                      <span className="sub-badge">
+                        {user.subscriptionStatus}
+                      </span>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                  <td>{user.lastActive}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
-          {filteredUsers.map((user) => (
-            <tr key={user.id} onClick={() => setSelectedUser(user)}>
-              <td>
-                <strong>{user.name}</strong>
-                <div className="sub">{user.segment}</div>
-              </td>
-              <td>
-                <div>{user.email}</div>
-                <div className="sub">{user.phone}</div>
-              </td>
-              <td className="center">
-                {user.emailVerified ? (
-                  <CheckCircle className="ok" size={16} />
-                ) : (
-                  <XCircle className="bad" size={16} />
-                )}
-                {user.phoneVerified ? (
-                  <Smartphone className="ok" size={16} />
-                ) : (
-                  <Smartphone className="bad" size={16} />
-                )}
-              </td>
-              <td className="center">{user.adsWatched}</td>
-              <td className="center">{user.totalBookings}</td>
-              <td className="center">
-                <strong>{user.credits} CR</strong>
-                <div className="green">+{user.creditsEarned}</div>
-                <div className="red">-{user.creditsSpent}</div>
-              </td>
-              <td>{user.subscriptionStatus}</td>
-              <td>{user.lastActive}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* DRAWER */}
+      {/* Drawer */}
       {selectedUser && (
-        <div className="drawer" onClick={() => setSelectedUser(null)}>
-          <div
-            className="drawer-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button className="close" onClick={() => setSelectedUser(null)}>
-              ✕
-            </button>
-
-            <h2>{selectedUser.name}</h2>
-            <p className="sub">{selectedUser.email}</p>
-
-            <div className="stats">
-              <div>
-                <span>Balance</span>
-                <strong>{selectedUser.credits} CR</strong>
-              </div>
-              <div>
-                <span>Spent</span>
-                <strong>{selectedUser.creditsSpent} CR</strong>
+        <div className="drawer-overlay" onClick={() => setSelectedUserId(null)}>
+          <div className="drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-header">
+              <h2>User Profile</h2>
+              <div className="header-actions">
+                {isEditing ? (
+                  <>
+                    <button onClick={handleSave} className="btn-save">
+                      Save
+                    </button>
+                    <button onClick={handleCancel} className="btn-cancel">
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {canEditUsers && (
+                      <button onClick={handleEdit} className="btn-edit">
+                        Edit
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setSelectedUserId(null)}
+                      className="btn-close"
+                    >
+                      ×
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
-            <div className="credit-actions">
-              <input
-                type="number"
-                placeholder="Credits"
-                value={creditAmount}
-                onChange={(e) => setCreditAmount(e.target.value)}
-              />
-              <button onClick={addCredits}>
-                <PlusCircle size={16} /> Add
-              </button>
-              <button onClick={deductCredits} className="danger">
-                <MinusCircle size={16} /> Deduct
-              </button>
-            </div>
+            <div className="drawer-body">
+              <div className="profile-section">
+                <div className="profile-avatar">{selectedUser.name[0]}</div>
+                <div className="profile-info">
+                  <h3>{selectedUser.name}</h3>
+                  <p>{selectedUser.email}</p>
+                  <small>Joined {selectedUser.joinDate}</small>
+                </div>
+              </div>
 
-            <div className="verify">
-              {!selectedUser.emailVerified && (
-                <button onClick={() => verifyEmail(selectedUser.id)}>
-                  <Mail size={14} /> Verify Email
-                </button>
+              <div className="stats-grid">
+                <div className="stat-card">
+                  <div className="stat-label">Current Balance</div>
+                  <div className="stat-value large green">
+                    {selectedUser.credits} CR
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-label">Lifetime Spent</div>
+                  <div className="stat-value large red">
+                    {selectedUser.creditsSpent} CR
+                  </div>
+                </div>
+              </div>
+
+              <div className="credits-section">
+                <h4>Credits & Expiry</h4>
+                <div className="expiry-summary">
+                  <div className="expiry-item">
+                    <div className="label">Active</div>
+                    <div className="value">{activeCredits}</div>
+                  </div>
+                  <div className="expiry-item warning">
+                    <div className="label">Exp in 7d</div>
+                    <div className="value">{creditsExpiringIn7Days}</div>
+                  </div>
+                  <div className="expiry-item danger">
+                    <div className="label">Expired (30d)</div>
+                    <div className="value">0</div>
+                  </div>
+                </div>
+
+                <div className="batches-table-wrapper">
+                  <table className="batches-table">
+                    <thead>
+                      <tr>
+                        <th>Batch ID</th>
+                        <th>Source</th>
+                        <th>Earned</th>
+                        <th>Expiry</th>
+                        <th>Remaining</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {userBatches.map((batch) => (
+                        <tr key={batch.id}>
+                          <td>{batch.id}</td>
+                          <td>{batch.source}</td>
+                          <td>{batch.earnedDate}</td>
+                          <td>{batch.expiryDate || "Never"}</td>
+                          <td>
+                            {batch.remainingAmount}/{batch.originalAmount}
+                          </td>
+                          <td>
+                            <span
+                              className={`status-badge ${batch.status.toLowerCase()}`}
+                            >
+                              {batch.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                      {userBatches.length === 0 && (
+                        <tr>
+                          <td colSpan="6" className="no-batches">
+                            No credit history.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {canManageCredits && (
+                <div className="credit-management">
+                  <h4>Manage Credits</h4>
+                  <div className="credit-controls">
+                    <input
+                      type="number"
+                      placeholder="Amount"
+                      value={creditAmount}
+                      onChange={(e) => setCreditAmount(e.target.value)}
+                    />
+                    <button className="btn-add">+ Add</button>
+                    <button className="btn-ded">− Deduct</button>
+                  </div>
+                </div>
               )}
-              {!selectedUser.phoneVerified && (
-                <button onClick={() => verifyPhone(selectedUser.id)}>
-                  <Smartphone size={14} /> Verify Phone
+
+              <div className="admin-actions">
+                <button
+                  onClick={handleSendNotification}
+                  disabled={notificationStatus !== "idle"}
+                  className="btn-notification"
+                >
+                  {notificationStatus === "sent"
+                    ? "Sent ✓"
+                    : notificationStatus === "sending"
+                    ? "Sending..."
+                    : "Send Push Notification"}
                 </button>
-              )}
+              </div>
             </div>
           </div>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default Users;
