@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Bookings.css";
+import { Grid3X3, LayoutList, Search } from "lucide-react";
+import { GiHamburger } from "react-icons/gi";
+import { CiGrid41 } from "react-icons/ci";
 
 // Mock useData — real loyihangizda o'zgartiriladi
 const useData = () => {
@@ -481,8 +484,6 @@ const Bookings = () => {
     </div>
   );
 
-  // ... oldingi importlar va useData bir xil qoladi ...
-
   const renderCalendarView = () => {
     const activeFields = fields.filter(
       (f) =>
@@ -645,37 +646,40 @@ const Bookings = () => {
   return (
     <div className="bookings-container">
       {/* KPIs */}
-      <div className="kpi-grid">
-        <div className="kpi-card">
+      <div className="bookings_kpi-grid">
+        <div className="bookings_kpi-card">
           <div>Total Sessions</div>
-          <div className="kpi-value">{bookings.length}</div>
+          <div className="bookings_kpi-value">{bookings.length}</div>
         </div>
-        <div className="kpi-card">
+        <div className="bookings_kpi-card">
           <div>Total Players</div>
-          <div className="kpi-value green">
+          <div className="bookings_kpi-value green">
             {bookings.reduce((acc, b) => acc + b.players.length, 0)}
           </div>
         </div>
-        <div className="kpi-card">
+        <div className="bookings_kpi-card">
           <div>Waitlisted</div>
-          <div className="kpi-value yellow">
+          <div className="bookings_kpi-value yellow">
             {bookings.reduce((acc, b) => acc + (b.waitlist?.length || 0), 0)}
           </div>
         </div>
-        <div className="kpi-card">
+        <div className="bookings_kpi-card">
           <div>Upcoming (24h)</div>
-          <div className="kpi-value blue">
+          <div className="bookings_kpi-value blue">
             {bookings.filter((b) => b.status === "Confirmed").length}
           </div>
         </div>
       </div>
 
       {/* Main Table/Calendar */}
-      <div className="main-panel">
-        <div className="toolbar">
-          <div className="toolbar-left">
+      <div className="bookings_main-panel">
+        <div className="bookings_toolbar">
+          <div className="bookings_toolbar-left">
             <h3>Game Schedule</h3>
-            <div className="search-box">
+            <div className="bookings_search-box">
+              <div className="bookings_icons">
+                <Search size={20} />
+              </div>
               <input
                 type="text"
                 placeholder="Search User or Field..."
@@ -684,7 +688,7 @@ const Bookings = () => {
               />
             </div>
 
-            <div className="day-filters">
+            <div className="bookings_day-filters">
               {availableDays.map((day) => (
                 <button
                   key={day}
@@ -717,18 +721,19 @@ const Bookings = () => {
             </select>
           </div>
 
-          <div className="view-toggle">
+          <div className="bookings_view-toggle">
             <button
               onClick={() => setViewMode("LIST")}
               className={viewMode === "LIST" ? "active" : ""}
             >
-              List
+              <LayoutList size={17}/> List
             </button>
             <button
               onClick={() => setViewMode("CALENDAR")}
               className={viewMode === "CALENDAR" ? "active" : ""}
             >
-              Calendar
+            
+            <Grid3X3 size={17}/>  Calendar
             </button>
           </div>
         </div>
@@ -738,9 +743,15 @@ const Bookings = () => {
 
       {/* Session Manager Modal */}
       {showManager && selectedBooking && (
-        <div className="modal-overlay" onClick={() => setShowManager(false)}>
-          <div className="session-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
+        <div
+          className="bookings_modal-overlay"
+          onClick={() => setShowManager(false)}
+        >
+          <div
+            className="bookings_session-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bookings_modal-header">
               <div>
                 {canManageSession ? (
                   <select
@@ -760,7 +771,7 @@ const Bookings = () => {
                 )}
                 <span> - 7v7 Game</span>
               </div>
-              <div className="modal-info">
+              <div className="bookings_modal-info">
                 <span>
                   {selectedBooking.dayOfWeek}, {selectedBooking.time} • 3
                   Credits/Player
@@ -768,19 +779,19 @@ const Bookings = () => {
               </div>
               <button
                 onClick={() => setShowManager(false)}
-                className="close-modal"
+                className="bookings_close-modal"
               >
                 ✖
               </button>
             </div>
 
-            <div className="modal-body">
+            <div className="bookings_modal-body">
               {/* Add Player Section */}
-              <div className="add-player-section">
+              <div className="bookings_add-player-section">
                 <h4>Add Player to Session</h4>
                 {canManageSession && (
-                  <div className="add-player-form" ref={searchRef}>
-                    <div className="search-input-wrapper">
+                  <div className="bookings_add-player-form" ref={searchRef}>
+                    <div className="bookings_search-input-wrapper">
                       <input
                         type="text"
                         placeholder="Search User ID or Name..."
@@ -792,13 +803,13 @@ const Bookings = () => {
                         onFocus={() => setShowUserResults(true)}
                       />
                       {showUserResults && userIdInput.length > 0 && (
-                        <div className="user-dropdown">
+                        <div className="bookings_user-dropdown">
                           {searchResults.length > 0 ? (
                             searchResults.map((user) => (
                               <div
                                 key={user.id}
                                 onClick={() => handleSelectUserForAdd(user)}
-                                className="user-result"
+                                className="bookings_user-result"
                               >
                                 <div>
                                   <div>{user.name}</div>
@@ -808,7 +819,9 @@ const Bookings = () => {
                               </div>
                             ))
                           ) : (
-                            <div className="no-results">No users found.</div>
+                            <div className="bookings_no-results">
+                              No users found.
+                            </div>
                           )}
                         </div>
                       )}
@@ -818,13 +831,15 @@ const Bookings = () => {
                 )}
 
                 {addPlayerError && (
-                  <div className="error-msg">⚠️ {addPlayerError}</div>
+                  <div className="bookings_error-msg">⚠️ {addPlayerError}</div>
                 )}
                 {addPlayerSuccess && (
-                  <div className="success-msg">✅ {addPlayerSuccess}</div>
+                  <div className="bookings_success-msg">
+                    ✅ {addPlayerSuccess}
+                  </div>
                 )}
                 {suggestion && (
-                  <div className="suggestion">
+                  <div className="bookings_suggestion">
                     Suggestion: Move to {suggestion.dayOfWeek} {suggestion.time}{" "}
                     ({suggestion.players.length}/{suggestion.maxPlayers})
                   </div>
