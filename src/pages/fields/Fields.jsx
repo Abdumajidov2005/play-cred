@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Fields.css";
+import { Edit, Map, MapIcon, MapPin, Plus, Trash } from "lucide-react";
 
 // useData hook — backend o'rniga oddiy mock (sizning haqiqiy kontekstingiz bilan almashtiriladi)
 const useData = () => {
@@ -130,19 +131,17 @@ const Fields = () => {
   return (
     <div className="fields-container">
       <div className="fields_header">
-        <h2>Barcha maydonlar (Jonli)</h2>
+        <h2>All Locations (Live)</h2>
         {canManageFields && (
           <button onClick={handleAddNew} className="fields_btn-add">
-            + Yangi maydon qo'shish
+            <Plus /> Add New Field
           </button>
         )}
       </div>
 
       <div className="fields_grid">
         {fields.length === 0 && (
-          <div className="no-fields">
-            Ma'lumotlar bazasida maydon topilmadi.
-          </div>
+          <div className="no-fields">Field not found in database.</div>
         )}
 
         {fields.map((field) => {
@@ -161,7 +160,7 @@ const Fields = () => {
                       : "status-maintenance"
                   }`}
                 >
-                  {field.status === "Active" ? "Faol" : "Ta'mirlash"}
+                  {field.status === "Active" ? "Active" : "Repair"}
                 </span>
               </div>
               <div className="fields_card-body">
@@ -175,22 +174,24 @@ const Fields = () => {
                           setIsCreating(false);
                         }}
                         className="fields_btn-icon"
-                        title="Tahrirlash"
+                        title="Edit"
                       >
-                        ✏️
+                        <Edit />
                       </button>
                       <button
                         onClick={() => handleDelete(field.id)}
                         className="fields_btn-icon fields_btn-delete"
-                        title="O'chirish"
+                        title="Delete"
                       >
-                        🗑️
+                        <Trash />
                       </button>
                     </div>
                   )}
                 </div>
                 <div className="fields_location">
-                  <span>📍 {field.location}</span>
+                  <span>
+                    <MapPin /> {field.location}
+                  </span>
                   {field.mapLink && (
                     <a
                       href={field.mapLink}
@@ -198,27 +199,27 @@ const Fields = () => {
                       rel="noopener noreferrer"
                       className="fields_map-link"
                     >
-                      ↗️ Xarita
+                      <Map /> Xarita
                     </a>
                   )}
                 </div>
 
                 <div className="fields_stats">
                   <div className="fields_stat-box">
-                    <div className="fields_stat-label">Bronlar</div>
+                    <div className="fields_stat-label">bookings</div>
                     <div className="fields_stat-value">{stats.count}</div>
                   </div>
                   <div className="fields_stat-box">
-                    <div className="fields_stat-label">Bandlik</div>
+                    <div className="fields_stat-label">Booked</div>
                     <div className="fields_stat-value">{stats.occupancy}%</div>
                   </div>
                 </div>
 
                 <div className="fields_price-section">
                   <div>
-                    <div className="fields_price-label">Soatlik narx</div>
+                    <div className="fields_price-label">Hourly rate</div>
                     <div className="fields_price-value">
-                      {field.pricePerHour} kredit
+                      {field.pricePerHour} Credit
                     </div>
                   </div>
                 </div>

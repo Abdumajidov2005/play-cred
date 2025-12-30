@@ -14,13 +14,18 @@
   margin: 0;
 }
 .fields_btn-add {
-  background: #10b981;
-  color: white;
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
+  background: #10b981;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
   font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .fields_btn-add:hover {
   background: #059669;
@@ -112,6 +117,15 @@
   margin-bottom: 16px;
   justify-content: space-between;
 }
+
+.fields_location span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
 .fields_map-link {
   font-size: 12px;
   color: #60a5fa;

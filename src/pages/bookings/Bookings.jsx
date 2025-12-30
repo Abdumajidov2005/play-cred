@@ -1,6 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Bookings.css";
-import { Grid3X3, LayoutList, Search } from "lucide-react";
+import {
+  Grid3X3,
+  LayoutList,
+  MapPin,
+  Search,
+  Timer,
+  User,
+  Users,
+} from "lucide-react";
 import { GiHamburger } from "react-icons/gi";
 import { CiGrid41 } from "react-icons/ci";
 
@@ -424,7 +432,7 @@ const Bookings = () => {
   };
 
   const renderListView = () => (
-    <div className="list-view">
+    <div className="bookings_list-view">
       {filteredBookings.length === 0 ? (
         <div className="empty-state">No bookings found matching filters.</div>
       ) : (
@@ -445,18 +453,22 @@ const Bookings = () => {
                   </span>
                   <span className="time">{booking.time}</span>
                 </div>
-                <div>
+                <div className="bookings-header_titles">
                   <h4>{booking.fieldName}</h4>
                   <span className="booking-id">{booking.id}</span>
                 </div>
               </div>
               <div className="booking-details">
-                <span>⏱ {booking.duration}h (7v7)</span>
-                <span>📍 Dubai</span>
+                <span>
+                  <Timer /> {booking.duration}h (7v7)
+                </span>
+                <span>
+                  <MapPin /> Dubai
+                </span>
               </div>
               <div className="roster-bar">
                 <div className="player-count">
-                  👥{" "}
+                  <Users />
                   <span className={isFull ? "full" : "available"}>
                     {playerCount} / {booking.maxPlayers}
                   </span>
@@ -726,14 +738,13 @@ const Bookings = () => {
               onClick={() => setViewMode("LIST")}
               className={viewMode === "LIST" ? "active" : ""}
             >
-              <LayoutList size={17}/> List
+              <LayoutList size={17} /> List
             </button>
             <button
               onClick={() => setViewMode("CALENDAR")}
               className={viewMode === "CALENDAR" ? "active" : ""}
             >
-            
-            <Grid3X3 size={17}/>  Calendar
+              <Grid3X3 size={17} /> Calendar
             </button>
           </div>
         </div>
@@ -891,7 +902,9 @@ const Bookings = () => {
                   <div className="roster-list">
                     {!selectedBooking.waitlist ||
                     selectedBooking.waitlist.length === 0 ? (
-                      <div>Waitlist is empty.</div>
+                      <div className="bookings_waitlist">
+                        Waitlist is empty.
+                      </div>
                     ) : (
                       selectedBooking.waitlist.map((p, idx) => (
                         <div key={idx} className="player-row">

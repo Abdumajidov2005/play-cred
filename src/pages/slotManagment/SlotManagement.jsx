@@ -10,6 +10,8 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import { TbEdit } from "react-icons/tb";
+import { FaXmark } from "react-icons/fa6";
+import { AlertCircleIcon, Save } from "lucide-react";
 
 // Mock useData — real loyihada o'zgartiriladi
 const useData = () => {
@@ -125,12 +127,12 @@ const SlotManagement = () => {
       !editingSlot?.startTime ||
       !editingSlot?.endTime
     ) {
-      setError("Maydon, boshlanish va tugash vaqtlari majburiy.");
+      setError("Field, start time, and end time are required.");
       return;
     }
 
     if (editingSlot.startTime >= editingSlot.endTime) {
-      setError("Boshlanish vaqti tugash vaqtidan oldin bo'lishi kerak.");
+      setError("Start time must be before end time.");
       return;
     }
 
@@ -138,7 +140,7 @@ const SlotManagement = () => {
       editingSlot.type === "DayOfWeek" &&
       (!editingSlot.daysOfWeek || editingSlot.daysOfWeek.length === 0)
     ) {
-      setError("Kamida bitta kun tanlang.");
+      setError("Please select at least one day.");
       return;
     }
 
@@ -153,13 +155,13 @@ const SlotManagement = () => {
       setEditingSlot(null);
       setError(null);
     } catch (err) {
-      setError("Saqlashda xatolik yuz berdi.");
+      setError("An error occurred while saving.");
     }
   };
 
   const handleDelete = async (slot) => {
     const field = fields.find((f) => f.id === slot.fieldId);
-    const confirmMsg = `Bu slot qoidasini o'chirmoqchimisiz?\n\nMaydon: ${field?.name}\nVaqt: ${slot.startTime} - ${slot.endTime}\n\nBu kelajakdagi bronlarni oldini oladi.`;
+    const confirmMsg = `Do you want to delete this slot rule?\n\nFiled: ${field?.name}\ Time: ${slot.startTime} - ${slot.endTime}\n\nThis will prevent future bookings.`;
 
     if (window.confirm(confirmMsg)) {
       await deleteSlotConfig(slot.id);
@@ -180,15 +182,19 @@ const SlotManagement = () => {
   };
 
   const handlePublish = async () => {
-    if (!window.confirm("Bu amal User App ni yangilaydi. Davom etasizmi?"))
+    if (
+      !window.confirm(
+        "This action will update the User App. Do you want to continue?"
+      )
+    )
       return;
 
     setIsPublishing(true);
     try {
       await publishSlotUpdates();
-      alert("User App muvaffaqiyatli yangilandi.");
+      alert("User App was successfully updated.");
     } catch (e) {
-      alert("Yangilashda xatolik. Qayta urinib ko'ring.");
+      alert("An error occurred while updating. Please try again.");
     } finally {
       setIsPublishing(false);
     }
@@ -228,19 +234,19 @@ const SlotManagement = () => {
       <div className="table-container">
         {slotConfigs.length === 0 ? (
           <div className="empty-state">
-            Faol slot qoidalari yo'q. Bronlar ishlamasligi mumkin.
+            No active slot rules. Bookings may not work.
           </div>
         ) : (
           <table className="slots-table">
             <thead>
               <tr>
-                <th>Maydon</th>
-                <th>Jadval turi</th>
-                <th>Kunlar/Sana</th>
-                <th>Vaqt oralig'i</th>
-                <th>Davomiylik/O'yinchilar</th>
-                <th>Holati</th>
-                <th>Amallar</th>
+                <th>Field</th>
+                <th>Schedule Type</th>
+                <th>Days/Date</th>
+                <th>Time Range</th>
+                <th>Duration/Players</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -248,16 +254,14 @@ const SlotManagement = () => {
                 const field = fields.find((f) => f.id === slot.fieldId);
                 return (
                   <tr key={slot.id}>
-                    <td className="field-name">{field?.name || "Noma'lum"}</td>
+                    <td className="field-name">{field?.name || "Unknown"}</td>
                     <td>
                       <span
                         className={`type-badge ${
                           slot.type === "DayOfWeek" ? "weekly" : "specific"
                         }`}
                       >
-                        {slot.type === "DayOfWeek"
-                          ? "Haftalik"
-                          : "Muayyan sana"}
+                        {slot.type === "DayOfWeek" ? "Weekly" : "Specific Date"}
                       </span>
                     </td>
                     <td>
@@ -275,19 +279,17 @@ const SlotManagement = () => {
                       {slot.startTime} - {slot.endTime}
                     </td>
                     <td className="duration">
-                      <div>{slot.durationMinutes} daqiqa</div>
-                      <div className="small">
-                        Maks {slot.maxPlayers} o'yinchi
-                      </div>
+                      <div>{slot.durationMinutes} min</div>
+                      <div className="small">Max {slot.maxPlayers} players</div>
                     </td>
                     <td className="slot_status">
                       {slot.isActive ? (
                         <span className="slot_status-active">
-                          <FaCheckCircle /> Faol
+                          <FaCheckCircle /> Active
                         </span>
                       ) : (
                         <span className="slot_status-inactive">
-                          <FaTimesCircle /> Faol emas
+                          <FaTimesCircle /> Inactive
                         </span>
                       )}
                     </td>
@@ -298,14 +300,14 @@ const SlotManagement = () => {
                           <button
                             onClick={() => handleEdit(slot)}
                             className="slot_btn-edit"
-                            title="Tahrirlash"
+                            title="Edit"
                           >
                             <FaRegEdit />
                           </button>
                           <button
                             onClick={() => handleDelete(slot)}
                             className="slot_btn-delete"
-                            title="O'chirish"
+                            title="Delete"
                           >
                             <FaTrashAlt />
                           </button>
@@ -322,23 +324,24 @@ const SlotManagement = () => {
 
       {/* Drawer (Yon panel) */}
       {isDrawerOpen && editingSlot && (
-        <div className="slot_drawer-overlay" onClick={() => setIsDrawerOpen(false)}>
+        <div
+          className="slot_drawer-overlay"
+          onClick={() => setIsDrawerOpen(false)}
+        >
           <div className="drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
-              <h3>
-                {editingSlot.id ? "Qoidani tahrirlash" : "Yangi slot qoidasi"}
-              </h3>
+              <h3>{editingSlot.id ? "Edit rule" : "New slot rule"}</h3>
               <button
                 onClick={() => setIsDrawerOpen(false)}
                 className="close-btn"
               >
-                ✖
+                <FaXmark />
               </button>
             </div>
 
             <div className="drawer-body">
               <div className="form-group">
-                <label>Maydon</label>
+                <label>Field</label>
                 <select
                   value={editingSlot.fieldId}
                   onChange={(e) =>
@@ -354,7 +357,7 @@ const SlotManagement = () => {
               </div>
 
               <div className="form-group">
-                <label>Jadval turi</label>
+                <label>Schedule type</label>
                 <div className="type-toggle">
                   <button
                     onClick={() =>
@@ -362,7 +365,7 @@ const SlotManagement = () => {
                     }
                     className={editingSlot.type === "DayOfWeek" ? "active" : ""}
                   >
-                    Haftalik
+                    Weekly
                   </button>
                   <button
                     onClick={() =>
@@ -372,14 +375,14 @@ const SlotManagement = () => {
                       editingSlot.type === "SpecificDate" ? "active" : ""
                     }
                   >
-                    Muayyan sana
+                    Specific date
                   </button>
                 </div>
               </div>
 
               {editingSlot.type === "DayOfWeek" ? (
                 <div className="form-group">
-                  <label>Kunlarni tanlang</label>
+                  <label>Select days</label>
                   <div className="days-grid">
                     {[
                       "Monday",
@@ -406,7 +409,7 @@ const SlotManagement = () => {
                 </div>
               ) : (
                 <div className="form-group">
-                  <label>Sana</label>
+                  <label>Date</label>
                   <input
                     type="date"
                     value={editingSlot.date || ""}
@@ -419,7 +422,7 @@ const SlotManagement = () => {
 
               <div className="time-grid">
                 <div className="form-group">
-                  <label>Boshlanish vaqti</label>
+                  <label>Start time</label>
                   <input
                     type="time"
                     value={editingSlot.startTime}
@@ -432,7 +435,7 @@ const SlotManagement = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Tugash vaqti</label>
+                  <label>End time</label>
                   <input
                     type="time"
                     value={editingSlot.endTime}
@@ -448,7 +451,7 @@ const SlotManagement = () => {
 
               <div className="grid-2">
                 <div className="form-group">
-                  <label>Slot davomiyligi (daq)</label>
+                  <label>Slot duration (min)</label>
                   <input
                     type="number"
                     value={editingSlot.durationMinutes}
@@ -461,7 +464,7 @@ const SlotManagement = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Maks o'yinchilar</label>
+                  <label>Max players</label>
                   <input
                     type="number"
                     value={editingSlot.maxPlayers}
@@ -486,22 +489,25 @@ const SlotManagement = () => {
                     })
                   }
                 />
-                <span>Qoida faol</span>
+                <span>Rule active</span>
               </div>
 
-              {error && <div className="error-message">⚠️ {error}</div>}
-            </div>
-
-            <div className="drawer-footer">
-              <button
-                onClick={() => setIsDrawerOpen(false)}
-                className="btn-cancel"
-              >
-                Bekor qilish
-              </button>
-              <button onClick={handleSave} className="btn-save">
-                💾 Saqlash
-              </button>
+              {error && (
+                <div className="error-message">
+                  <AlertCircleIcon /> {error}
+                </div>
+              )}
+              <div className="drawer-footer">
+                <button
+                  onClick={() => setIsDrawerOpen(false)}
+                  className="btn-cancel"
+                >
+                  Cancel
+                </button>
+                <button onClick={handleSave} className="btn-save">
+                  <Save /> Save
+                </button>
+              </div>
             </div>
           </div>
         </div>
